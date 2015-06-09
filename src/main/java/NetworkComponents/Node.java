@@ -1,4 +1,5 @@
 package NetworkComponents;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +8,7 @@ import java.util.Map;
 /**
  * A utility class to hold node attributes.
  */
-public class Node implements Serializable{
+public class Node implements Serializable {
 
     public String id;
     public String name;
@@ -27,27 +28,29 @@ public class Node implements Serializable{
     public double betweennessCentrality = 0.0; //default 0
 
     //ranking, these are the ranking of the nodes within the network from 1 to n in descending order.
-    public int citeCountRank=0;
-    public int pageRank=0;
-    public int betweennessCentralityRank=0;
+    public int citeCountRank = 0;
+    public int pageRank = 0;
+    public int betweennessCentralityRank = 0;
 
-    public Node(){}
-    public Node(String p_id, String p_name, double p_nodeWeight){
+    public Node() {
+    }
+
+    public Node(String p_id, String p_name, double p_nodeWeight) {
         id = p_id;
         name = p_name;
         nodeWeight = p_nodeWeight;
     }
 
-    public boolean equals(Node node){
+    public boolean equals(Node node) {
         return this.id == node.id;
     }
 
-    public Node setBetweenness(Double dub){
+    public Node setBetweenness(Double dub) {
         betweennessCentrality = dub;
         return this;
     }
 
-    public Node setTeleportWeight(Double dub){
+    public Node setTeleportWeight(Double dub) {
         this.teleportWeight = dub;
         return this;
     }

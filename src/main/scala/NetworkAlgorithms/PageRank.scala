@@ -1,4 +1,5 @@
 package NetworkAlgorithms
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -77,17 +78,16 @@ object PageRank extends Logging {
    *
    */
   def run[VD: ClassTag, ED: ClassTag](
-                                       graph: Graph[VD, ED], numIter: Int, resetProb: Double = 0.15): Graph[Double, Double] =
-  {
+                                       graph: Graph[VD, ED], numIter: Int, resetProb: Double = 0.15): Graph[Double, Double] = {
     // Initialize the pagerankGraph with each edge attribute having
     // weight 1/outDegree and each vertex with attribute 1.0.
     val pagerankGraph: Graph[Double, Double] = graph
       // Associate the degree with each vertex
       .outerJoinVertices(graph.outDegrees) { (vid, vdata, deg) => deg.getOrElse(0) }
       // Set the weight on the edges based on the degree
-      .mapTriplets( e => 1.0 / e.srcAttr )
+      .mapTriplets(e => 1.0 / e.srcAttr)
       // Set the vertex attributes to the initial pagerank values
-      .mapVertices( (id, attr) => 1.0 )
+      .mapVertices((id, attr) => 1.0)
       .cache()
 
     // Define the three functions needed to implement PageRank in the GraphX
@@ -120,8 +120,7 @@ object PageRank extends Logging {
    *         containing the normalized weight.
    */
   def runUntilConvergence[VD: ClassTag, ED: ClassTag](
-                                                       graph: Graph[VD, ED], tol: Double, resetProb: Double = 0.15): Graph[Double, Double] =
-  {
+                                                       graph: Graph[VD, ED], tol: Double, resetProb: Double = 0.15): Graph[Double, Double] = {
     // Initialize the pagerankGraph with each edge attribute
     // having weight 1/outDegree and each vertex with attribute 1.0.
     val pagerankGraph: Graph[(Double, Double), Double] = graph
@@ -130,9 +129,9 @@ object PageRank extends Logging {
       (vid, vdata, deg) => deg.getOrElse(0)
     }
       // Set the weight on the edges based on the degree
-      .mapTriplets( e => 1.0 / e.srcAttr )
+      .mapTriplets(e => 1.0 / e.srcAttr)
       // Set the vertex attributes to (initalPR, delta = 0)
-      .mapVertices( (id, attr) => (0.0, 0.0) )
+      .mapVertices((id, attr) => (0.0, 0.0))
       .cache()
 
     // Define the three functions needed to implement PageRank in the GraphX

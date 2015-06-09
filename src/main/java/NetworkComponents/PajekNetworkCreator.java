@@ -19,6 +19,7 @@ import java.util.Map;
 public class PajekNetworkCreator {
 
     final static Charset ENCODING = StandardCharsets.UTF_8;
+
     /**
      * Following the implementation of InfoMap written in C++ (by Martin Rosvall):
      * This method reads network in Pajek format
@@ -43,32 +44,34 @@ public class PajekNetworkCreator {
     public static void readPajekNetFile(Network network) throws IOException {
 
         BufferedReader reader = Files.newBufferedReader(Paths.get(network.name), ENCODING);
-        String line = null; String currentPart = ""; int linkCount = 0;
+        String line = null;
+        String currentPart = "";
+        int linkCount = 0;
         while ((line = reader.readLine()) != null) {
             line = line.trim();
             if (line.equals("")) //skip the empty lines, if there is any
                 continue;
 
-            if (line.length() > 9 && line.substring(0, 9).equalsIgnoreCase("*Vertices")){
+            if (line.length() > 9 && line.substring(0, 9).equalsIgnoreCase("*Vertices")) {
                 network.numNode = new Integer(line.substring(line.indexOf(" ") + 1)).intValue();
                 currentPart = "nodes";
                 continue;
             }
 
-            if (line.length() > 6 && ( line.substring(0, 6).equalsIgnoreCase("*Edges") || line.substring(0, 5).equalsIgnoreCase("*Arcs"))){
+            if (line.length() > 6 && (line.substring(0, 6).equalsIgnoreCase("*Edges") || line.substring(0, 5).equalsIgnoreCase("*Arcs"))) {
                 network.numLink = new Integer(line.substring(line.indexOf(" ") + 1)).intValue();
                 currentPart = "links";
                 continue;
             }
 
             //Reading nodes
-            if (currentPart.equals("nodes")){
+            if (currentPart.equals("nodes")) {
                 int nameStart = line.indexOf("\"");
                 int nameEnd = line.lastIndexOf("\"");
 
-                String id = line.substring(0, nameStart-1);
-                String name = line.substring(nameStart+1, nameEnd);
-                String nodeWeight_str = line.substring(nameEnd+1).trim();
+                String id = line.substring(0, nameStart - 1);
+                String name = line.substring(nameStart + 1, nameEnd);
+                String nodeWeight_str = line.substring(nameEnd + 1).trim();
                 Double nodeWeight = 1.0; //default value
                 if (nodeWeight_str.length() > 0 && Double.valueOf(nodeWeight_str) > 0.0)
                     nodeWeight = Double.valueOf(nodeWeight_str);
@@ -79,7 +82,7 @@ public class PajekNetworkCreator {
             }
 
             //Reading links
-            if (currentPart.equals("links")){
+            if (currentPart.equals("links")) {
                 linkCount++;
 
                 String[] tokens = line.split(" ");
@@ -96,11 +99,11 @@ public class PajekNetworkCreator {
 
         }
 
-        if (network.numNode != network.nodeMap.size()){
+        if (network.numNode != network.nodeMap.size()) {
             System.out.println("Number of nodes not matching, exiting!!!");
             System.exit(1);
         }
-        if (network.numLink != linkCount){
+        if (network.numLink != linkCount) {
             System.out.println("Number of links not matching, exiting!!!");
             System.exit(1);
         }
@@ -109,32 +112,34 @@ public class PajekNetworkCreator {
     public static Tuple2<List<Node>, Double> readPajekNetFile(String fileName) throws IOException {
         Network network = new Network();
         BufferedReader reader = Files.newBufferedReader(Paths.get(fileName), ENCODING);
-        String line = null; String currentPart = ""; int linkCount = 0;
+        String line = null;
+        String currentPart = "";
+        int linkCount = 0;
         while ((line = reader.readLine()) != null) {
             line = line.trim();
             if (line.equals("")) //skip the empty lines, if there is any
                 continue;
 
-            if (line.length() > 9 && line.substring(0, 9).equalsIgnoreCase("*Vertices")){
+            if (line.length() > 9 && line.substring(0, 9).equalsIgnoreCase("*Vertices")) {
                 network.numNode = new Integer(line.substring(line.indexOf(" ") + 1)).intValue();
                 currentPart = "nodes";
                 continue;
             }
 
-            if (line.length() > 6 && ( line.substring(0, 6).equalsIgnoreCase("*Edges") || line.substring(0, 5).equalsIgnoreCase("*Arcs"))){
+            if (line.length() > 6 && (line.substring(0, 6).equalsIgnoreCase("*Edges") || line.substring(0, 5).equalsIgnoreCase("*Arcs"))) {
                 network.numLink = new Integer(line.substring(line.indexOf(" ") + 1)).intValue();
                 currentPart = "links";
                 continue;
             }
 
             //Reading nodes
-            if (currentPart.equals("nodes")){
+            if (currentPart.equals("nodes")) {
                 int nameStart = line.indexOf("\"");
                 int nameEnd = line.lastIndexOf("\"");
 
-                String id = line.substring(0, nameStart-1);
-                String name = line.substring(nameStart+1, nameEnd);
-                String nodeWeight_str = line.substring(nameEnd+1).trim();
+                String id = line.substring(0, nameStart - 1);
+                String name = line.substring(nameStart + 1, nameEnd);
+                String nodeWeight_str = line.substring(nameEnd + 1).trim();
                 Double nodeWeight = 1.0; //default value
                 if (nodeWeight_str.length() > 0 && Double.valueOf(nodeWeight_str) > 0.0)
                     nodeWeight = Double.valueOf(nodeWeight_str);
@@ -145,7 +150,7 @@ public class PajekNetworkCreator {
             }
 
             //Reading links
-            if (currentPart.equals("links")){
+            if (currentPart.equals("links")) {
                 linkCount++;
 
                 String[] tokens = line.split(" ");
@@ -162,25 +167,24 @@ public class PajekNetworkCreator {
 
         }
 
-        if (network.numNode != network.nodeMap.size()){
+        if (network.numNode != network.nodeMap.size()) {
             System.out.println("Number of nodes not matching, exiting!!!");
             System.exit(1);
         }
-        if (network.numLink != linkCount){
+        if (network.numLink != linkCount) {
             System.out.println("Number of links not matching, exiting!!!");
             System.exit(1);
         }
         List<Node> temp = new ArrayList<>();
         Iterator t = network.nodeMap.entrySet().iterator();
-        while(t.hasNext()){
-            Map.Entry nex = (Map.Entry)t.next();
-            Node next = (Node)nex.getValue();
+        while (t.hasNext()) {
+            Map.Entry nex = (Map.Entry) t.next();
+            Node next = (Node) nex.getValue();
             temp.add(next);
         }
         Double val = network.numLink * 1.0;
-        return new Tuple2<> (temp, val);
+        return new Tuple2<>(temp, val);
     }
-
 
 
 }
